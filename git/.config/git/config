@@ -1,0 +1,14 @@
+[alias]
+	contributors = shortlog -sne --group=author --group=trailer:co-authored-by
+	uncommit = reset --soft HEAD^1
+
+[gpg]
+	format = ssh
+
+[init]
+	defaultBranch = main
+
+[user]
+	name = Mykola Peredrii
+	email = mykolaperedrii@proton.me
+
