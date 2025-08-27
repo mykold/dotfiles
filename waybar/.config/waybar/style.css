@@ -1,12 +1,11 @@
 * {
   border: none;
-  font-family: "JetbrainsMono Nerd Font";
   font-size: 15px;
   min-height: 10px;
 }
 
 window#waybar {
-  background: rgba(34, 36, 54, 0.6);
+  background: rgba(34, 34, 34, 0.25);
 }
 
 window#waybar.hidden {
