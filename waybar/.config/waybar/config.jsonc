@@ -8,7 +8,6 @@
   "gtk-layer-shell": true,
 
   "modules-left": [
-    "custom/archicon",
     "clock",
     "cpu",
     "memory",
@@ -26,11 +25,6 @@
     "hyprland/language"
   ],
 
-  "custom/archicon": {
-    "format": "",
-    "on-click": "rofi -show drun",
-    "tooltip": false
-  },
   "clock": {
     "timezone": "Europe/Madrid",
     "format": "{:%I:%M %d/%m/%Y}",

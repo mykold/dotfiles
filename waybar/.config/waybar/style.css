@@ -12,7 +12,6 @@ window#waybar.hidden {
   opacity: 0.2;
 }
 
-#custom-archicon,
 #clock,
 #cpu,
 #memory,
@@ -31,7 +30,7 @@ window#waybar.hidden {
   transition: none;
 }
 
-#custom-archicon,
+#clock,
 #cpu,
 #idle_inhibitor {
   margin-left: 5px;
@@ -45,13 +44,6 @@ window#waybar.hidden {
   margin-right: 5px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-#custom-archicon {
-  font-size: 20px;
-  color: #89B4FA;
-  background: #161320;
-  padding-right: 17px;
 }
 
 #clock {
