@@ -157,6 +157,23 @@ require("lazy").setup({
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
+		init = function()
+			vim.api.nvim_create_autocmd("VimEnter", {
+				once = true,
+				callback = function()
+					local arg0 = vim.fn.argv(0)
+					if type(arg0) ~= "string" or arg0 == "" or vim.fn.isdirectory(arg0) ~= 1 then
+						return
+					end
+
+					require("lazy").load({ plugins = { "telescope.nvim" } })
+
+					vim.schedule(function()
+						require("telescope.builtin").find_files({ cwd = arg0 })
+					end)
+				end,
+			})
+		end,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -262,15 +279,6 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
-
-			vim.api.nvim_create_autocmd("VimEnter", {
-				callback = function()
-					local arg = vim.fn.argv(0)
-					if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
-						builtin.find_files({ cwd = arg })
-					end
-				end,
-			})
 		end,
 	},
 
