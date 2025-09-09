@@ -406,6 +406,19 @@ require("lazy").setup({
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 						end, "[T]oggle Inlay [H]ints")
 					end
+
+					if client and client.name == "gopls" then
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = event.buf,
+							callback = function()
+								vim.lsp.buf.code_action({
+									context = { only = { "source.organizeImports" }, diagnostics = {} },
+									apply = true,
+								})
+								vim.lsp.buf.format({ async = false, timeout_ms = 3000 })
+							end,
+						})
+					end
 				end,
 			})
 
