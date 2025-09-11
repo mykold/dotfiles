@@ -293,6 +293,14 @@ require("lazy").setup({
 			},
 		},
 	},
+
+	{
+		"nvim-java/nvim-java",
+		config = function()
+			require("java").setup()
+		end,
+	},
+
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
@@ -302,6 +310,7 @@ require("lazy").setup({
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
 			"saghen/blink.cmp",
+			"nvim-java/nvim-java",
 		},
 		opts = {
 			--- @type table<string, vim.lsp.Config>
@@ -324,6 +333,21 @@ require("lazy").setup({
 						Lua = {
 							completion = {
 								callSnippet = "Replace",
+							},
+						},
+					},
+				},
+				jdtls = {
+					settings = {
+						java = {
+							configuration = {
+								runtimes = {
+									{
+										name = "JavaSE-17",
+										path = "/opt/jdk-17.0.12",
+										default = true,
+									},
+								},
 							},
 						},
 					},
@@ -457,6 +481,7 @@ require("lazy").setup({
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, { "stylua" })
+
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			for server_name, config in pairs(servers) do
