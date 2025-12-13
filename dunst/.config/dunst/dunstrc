@@ -1,0 +1,88 @@
+[global]
+    # Display
+    monitor = 0
+    follow = none
+
+    # Geometry & Design
+    width = 300
+    height = 300
+    origin = top-right
+    offset = (20, 20)
+    scale = 0
+    notification_limit = 20
+
+    # Appearance
+    font = JetBrainsMono Nerd Font 10
+    corner_radius = 10
+    corners = all
+
+    # Border
+    frame_width = 2
+    frame_color = "#31314d"
+    separator_color = frame
+
+    # Spacing
+    padding = 8
+    horizontal_padding = 8
+    text_icon_padding = 0
+    separator_height = 2
+
+    # Progress Bar
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 300
+    progress_bar_corner_radius = 0
+
+    # Text & Content
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    vertical_alignment = center
+    ellipsize = middle
+    show_age_threshold = 60
+    ignore_newline = no
+    stack_duplicates = true
+    show_indicators = yes
+
+    # Icons
+    enable_recursive_icon_lookup = true
+    icon_theme = Papirus-Dark # `papirus-icon-theme`
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 128
+
+    # Interaction
+    sticky_history = yes
+    history_length = 20
+    dmenu = /usr/bin/dmenu -p dunst:
+    browser = /usr/bin/xdg-open
+
+    # Mouse Actions
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[urgency_low]
+    background = "#222222"
+    foreground = "#888888"
+    timeout = 10
+    default_icon = dialog-information
+
+[urgency_normal]
+    background = "#131318"
+    foreground = "#cdd6f4"
+    frame_color = "#31314d"
+    timeout = 10
+    default_icon = dialog-information
+
+[urgency_critical]
+    background = "#131318"
+    foreground = "#ff5555"
+    frame_color = "#ff5555"
+    timeout = 0
+    default_icon = dialog-warning
+
+# vim: ft=cfg
+
