@@ -1,2 +1,132 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    display-drun: "Apps";
+    display-run: "Run";
+    display-window: "Window";
+    drun-display-format: "{name}";
+}
 
-@theme "/usr/share/rofi/themes/Monokai.rasi"
+* {
+    background: #131318;
+    background-alt: #1a1a25;
+    foreground: #cdd6f4;
+    selected: #31314d;
+    border-col: #31314d;
+    
+    background-color: transparent;
+    text-color: @foreground;
+    font: "JetBrainsMono Nerd Font 10";
+}
+
+window {
+    transparency: "real";
+    location: center;
+    anchor: center;
+    fullscreen: false;
+    width: 600px;
+    enabled: true;
+    border: 2px;
+    border-color: @border-col;
+    border-radius: 10px;
+    background-color: @background;
+    cursor: "default";
+}
+
+mainbox {
+    enabled: true;
+    spacing: 10px;
+    padding: 20px;
+    background-color: transparent;
+    children: [ "inputbar", "listview" ];
+}
+
+inputbar {
+    enabled: true;
+    spacing: 10px;
+    padding: 0px;
+    background-color: transparent;
+    text-color: @foreground;
+    children: [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled: true;
+    background-color: @selected;
+    text-color: @foreground;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+entry {
+    enabled: true;
+    background-color: @background-alt;
+    text-color: @foreground;
+    cursor: text;
+    placeholder: "Search...";
+    placeholder-color: inherit;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+listview {
+    enabled: true;
+    columns: 1;
+    lines: 8;
+    cycle: true;
+    dynamic: true;
+    scrollbar: false;
+    layout: vertical;
+    reverse: false;
+    fixed-height: true;
+    fixed-columns: true;
+    border: 0px; 
+    spacing: 2px; 
+    padding: 10px 0px 0px 0px;
+    background-color: transparent;
+    text-color: @foreground;
+    cursor: "default";
+}
+
+element {
+    enabled: true;
+    spacing: 10px;
+    padding: 5px 10px; 
+    border-radius: 10px;
+    background-color: transparent;
+    text-color: @foreground;
+    cursor: pointer;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element alternate.normal {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element selected.normal {
+    background-color: @selected;
+    text-color: @foreground;
+}
+
+element-icon {
+    background-color: transparent;
+    text-color: inherit;
+    size: 24px;
+    cursor: inherit;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    highlight: inherit;
+    cursor: inherit;
+    vertical-align: 0.5;
+    horizontal-align: 0.0;
+}
+
