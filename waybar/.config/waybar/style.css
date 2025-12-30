@@ -84,27 +84,6 @@ window#waybar.hidden { opacity: 0.2; }
 
 #workspaces button:hover { color: @accent; }
 
-#taskbar {
-  border-radius: 10px;
-  padding: 0 5px;
-  margin: 6px 5px;
-}
-
-#taskbar button {
-  padding: 0 5px;
-  margin: 0 3px;
-  border-radius: 5px;
-  transition: background .2s ease;
-  color: @fg;
-}
-
-#taskbar button.active {
-  background: #8e90a8;
-  box-shadow: 0 0 3px rgba(142,144,168,.6);
-}
-
-#taskbar button:hover { background: #9a9cba; }
-
 @keyframes blink {
   to {
     background-color: #5a3f55;

@@ -18,7 +18,6 @@
     "hyprland/workspaces"
   ],
   "modules-right": [
-    "wlr/taskbar",
     "idle_inhibitor",
     "pulseaudio",
     "network",
@@ -71,17 +70,6 @@
     "show-special": true
   },
 
-  "wlr/taskbar": {
-    "format": "{icon}",
-    "all-outputs": true,
-    "active-first": true,
-    "tooltip-format": "{name}",
-    "on-click": "activate",
-    "on-click-middle": "close",
-    "ignore-list": [
-      "rofi"
-    ]
-  },
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
