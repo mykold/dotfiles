@@ -90,24 +90,25 @@ require("lazy").setup({
 	},
 
 	{
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
+		"stevearc/oil.nvim",
+		lazy = false,
+		---@module 'oil'
+		---@type oil.SetupOpts
+		opts = {
+			columns = { "permissions", "size", "mtime" },
+			view_options = {
+				show_hidden = true,
+				is_always_hidden = function(name, _)
+					return name == "." or name == ".git"
+				end,
+			},
 		},
 		keys = {
-			{ "\\", "<cmd>Neotree toggle<cr>", desc = "Toggle File Tree" },
+			{ "-", "<cmd>Oil<cr>" },
 		},
-		lazy = false,
-		opts = {
-			close_if_last_window = true,
-			window = {
-				width = 30,
-			},
-			hijack_netrw_behavior = "open_default",
-		},
+		config = function(_, opts)
+			require("oil").setup(opts)
+		end,
 	},
 
 	{
@@ -115,7 +116,7 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				ensure_installed = { "lua", "vim", "c", "go" },
+				ensure_installed = { "lua", "vim", "c", "go", "markdown" },
 				highlight = { enable = true },
 			})
 		end,
@@ -156,14 +157,14 @@ require("lazy").setup({
 				severity_sort = true,
 				float = { border = "rounded", source = "if_many" },
 				underline = { severity = vim.diagnostic.severity.ERROR },
-				signs = vim.g.have_nerd_font and {
+				signs = {
 					text = {
-						[vim.diagnostic.severity.ERROR] = "󰅚 ",
-						[vim.diagnostic.severity.WARN] = "󰀪 ",
-						[vim.diagnostic.severity.INFO] = "󰋽 ",
-						[vim.diagnostic.severity.HINT] = "󰌶 ",
+						[vim.diagnostic.severity.ERROR] = "E",
+						[vim.diagnostic.severity.WARN] = "W",
+						[vim.diagnostic.severity.INFO] = "I",
+						[vim.diagnostic.severity.HINT] = "H",
 					},
-				} or {},
+				},
 				virtual_text = {
 					source = "if_many",
 					spacing = 2,
@@ -183,11 +184,9 @@ require("lazy").setup({
 
 	{
 		"folke/lazydev.nvim",
-		ft = "lua", -- only load on lua files
+		ft = "lua",
 		opts = {
 			library = {
-				-- See the configuration section for more details
-				-- Load luvit types when the `vim.uv` word is found
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
 		},
@@ -256,20 +255,42 @@ require("lazy").setup({
 	},
 
 	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = {},
-	},
-
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		"echasnovski/mini.statusline",
+		version = false,
 		config = function()
-			require("lualine").setup({
-				options = {
-					theme = "catppuccin",
-					component_separators = "|",
-					section_separators = "",
+			local statusline = require("mini.statusline")
+			statusline.setup({
+				use_icons = false,
+				content = {
+					active = function()
+						local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
+
+						local git_branch = (vim.b.gitsigns_head or "-")
+						local git = git_branch ~= "-" and string.format(" %s ", git_branch) or ""
+
+						local diagnostics = statusline.section_diagnostics({ trunc_width = 75, icon = "" })
+
+						local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
+						local modified = vim.bo.modified and "[+]" or ""
+
+						local filetype = vim.bo.filetype
+						if filetype == "" then
+							filetype = "text"
+						end
+
+						local location = "%l:%v"
+						local progress = "%p%%"
+
+						return statusline.combine_groups({
+							{ hl = mode_hl, strings = { mode:upper() } },
+							{ hl = "MiniStatuslineDevinfo", strings = { git, diagnostics } },
+							"%=",
+							{ hl = "MiniStatuslineFilename", strings = { filename, modified } },
+							"%=",
+							{ hl = "MiniStatuslineFileinfo", strings = { filetype } },
+							{ hl = mode_hl, strings = { location, progress } },
+						})
+					end,
 				},
 			})
 		end,
