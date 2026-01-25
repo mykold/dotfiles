@@ -41,6 +41,10 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.list = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.tabstop = 4
 vim.opt.listchars = {
 	tab = "» ",
 	trail = "·",
@@ -78,14 +82,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 require("lazy").setup({
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		config = function()
-			require("catppuccin").setup({
-				transparent_background = true,
-			})
-			vim.cmd.colorscheme("catppuccin")
+		"blazkowolf/gruber-darker.nvim",
+		opts = {
+			bold = false,
+			invert = {
+				signs = false,
+				tabline = false,
+				visual = false,
+			},
+			italic = {
+				strings = false,
+				comments = false,
+				operators = false,
+				folds = false,
+			},
+			undercurl = false,
+			underline = false,
+		},
+		config = function(_, opts)
+			require("gruber-darker").setup(opts)
+
+			vim.cmd.colorscheme("gruber-darker")
 		end,
 	},
 
