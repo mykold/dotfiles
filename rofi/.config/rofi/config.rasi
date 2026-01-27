@@ -14,10 +14,10 @@ configuration {
     foreground: #cdd6f4;
     selected: #31314d;
     border-col: #31314d;
-    
+
     background-color: transparent;
     text-color: @foreground;
-    font: "JetBrainsMono Nerd Font 10";
+    font: "Iosevka Nerd Font Mono 13";
 }
 
 window {

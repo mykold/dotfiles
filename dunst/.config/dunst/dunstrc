@@ -12,7 +12,7 @@
     notification_limit = 20
 
     # Appearance
-    font = JetBrainsMono Nerd Font 10
+    font = Iosevka Nerd Font Mono 12
     corner_radius = 10
     corners = all
 
