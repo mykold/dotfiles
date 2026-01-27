@@ -76,12 +76,7 @@ window#waybar.hidden { opacity: 0.2; }
 }
 
 #workspaces button.occupied { color: @muted; }
-
-#workspaces button.active {
-  color: @accent;
-  text-shadow: 0 0 5px rgba(169, 144, 230, 0.5);
-}
-
+#workspaces button.active { color: @accent; }
 #workspaces button:hover { color: @accent; }
 
 @keyframes blink {
