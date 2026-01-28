@@ -156,19 +156,38 @@ require("lazy").setup({
         "neovim/nvim-lspconfig",
         dependencies = {
             { "mason-org/mason.nvim", opts = {} },
-            "mason-org/mason-lspconfig.nvim",
             "saghen/blink.cmp",
         },
-        config = function()
-            require("mason").setup()
-            require("mason-lspconfig").setup({
-                handlers = {
-                    function(server_name)
-                        local capabilities = require("blink.cmp").get_lsp_capabilities()
-                        require("lspconfig")[server_name].setup({ capabilities = capabilities })
-                    end,
+        opts = {
+            lua_ls = {
+                single_file_support = true,
+                settings = {
+                    Lua = {
+                        diagnostics = { globals = { "vim" } },
+                        telemetry = { enable = false },
+                        workspace = { checkThirdParty = false },
+                    },
                 },
-            })
+            },
+            basedpyright = {},
+            clangd = {},
+            gopls = {},
+        },
+
+        config = function(_, opts)
+            local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+            local servers = {}
+            for name, cfg in pairs(opts) do
+                if cfg ~= false then
+                    local merged = vim.tbl_deep_extend("force", {}, cfg, { capabilities = capabilities })
+                    vim.lsp.config(name, merged)
+                    table.insert(servers, name)
+                end
+            end
+
+            table.sort(servers)
+            vim.lsp.enable(servers)
 
             vim.diagnostic.config({
                 severity_sort = true,
@@ -185,14 +204,8 @@ require("lazy").setup({
                 virtual_text = {
                     source = "if_many",
                     spacing = 2,
-                    format = function(diagnostic)
-                        local diagnostic_message = {
-                            [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                            [vim.diagnostic.severity.WARN] = diagnostic.message,
-                            [vim.diagnostic.severity.INFO] = diagnostic.message,
-                            [vim.diagnostic.severity.HINT] = diagnostic.message,
-                        }
-                        return diagnostic_message[diagnostic.severity]
+                    format = function(d)
+                        return d.message
                     end,
                 },
             })
