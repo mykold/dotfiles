@@ -1,87 +1,74 @@
-@define-color fg #111111;
-
-@define-color pill #837cbf;
-@define-color pill-twin #8a84bf;
-
-@define-color accent #B2C5EB;
-@define-color muted #32334A;
+@define-color background rgba(29, 29, 41, 0.75);
+@define-color foreground #FFFFFF;
 
 * {
   border: none;
-  font-size: 15px;
-  min-height: 10px;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  font-family: 'Iosevka Nerd Font';
+  font-weight: 400;
+  font-size: 14px;
+  color: @foreground;
 }
 
-window#waybar { background: none; }
-window#waybar.hidden { opacity: 0.2; }
+window#waybar {
+  background: transparent;
+}
 
-#clock,
+window#waybar > box {
+  margin: 3px;
+  margin-bottom: 0;
+  padding: 3px;
+  background: @background;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35);
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  margin: 0;
+  padding: 0 10px;
+}
+
+#custom-network_speed,
 #cpu,
 #memory,
-#disk,
-#temperature,
-#idle_inhibitor,
 #pulseaudio,
-#pulseaudio-slider,
-#network,
 #language {
-  color: @fg;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  padding-left: 10px;
-  padding-right: 10px;
-  transition: none;
+  opacity: 0.95;
+  padding-right: 6px;
 }
 
-#clock,
-#cpu,
-#idle_inhibitor {
-  margin-left: 5px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+#custom-network_speed {
+    font-size: 90%;
 }
 
-#clock,
-#temperature,
-#language {
-  margin-right: 5px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+#custom-cpu_label,
+#custom-memory_label,
+#custom-pulseaudio_label {
+  font-size: 85%;
 }
 
-#clock          { background: @pill-twin; }
-#cpu            { background: @pill; }
-#memory         { background: @pill-twin; }
-#disk           { background: @pill; }
-#temperature    { background: @pill-twin; }
-#idle_inhibitor { background: @pill; padding-right: 15px; }
-#pulseaudio     { background: @pill-twin; }
-#network        { background: @pill; padding-right: 13px; }
-#language       { background: @pill-twin; padding-right: 15px; }
-
-@define-color workspaces-bg rgba(0, 0, 0, 0.45);
-
-#workspaces {
-  background: @workspaces-bg;
-  border-radius: 10px;
-  margin: 6px 5px;
-  padding: 0 6px;
+#memory,
+#pulseaudio {
+  opacity: 0.95;
 }
 
 #workspaces button {
-  color: @muted;
+  padding: 0 5px;
+  opacity: 0.50;
   background: transparent;
-  padding: 4px 4px;
-  transition: color .2s ease, text-shadow .2s ease, transform .2s ease;
+  transition: opacity 250ms ease;
 }
 
-#workspaces button.occupied { color: @muted; }
-#workspaces button.active { color: @accent; }
-#workspaces button:hover { color: @accent; }
-
-@keyframes blink {
-  to {
-    background-color: #5a3f55;
-    color: @fg;
-  }
+#workspaces button.active {
+  opacity: 1.00;
 }
+
+#workspaces button:not(.active):hover {
+  opacity: 0.75;
+}
+
