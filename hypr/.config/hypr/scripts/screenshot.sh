@@ -1,3 +1,11 @@
 #!/bin/bash
-file="$HOME/Pictures/Screenshots/$(date +'%Y-%m-%d_%H-%M-%S').png"
-grim "$file" && wl-copy < "$file" && notify-send "Screenshot" "Saved to $file"
+
+dir=$(date +"$HOME/Pictures/Screenshots/%Y/%m/%d")
+file=$(date +"$HOME/Pictures/Screenshots/%Y/%m/%d/%Y-%m-%d_%H-%M-%S.png")
+
+mkdir -p -- "$dir"
+
+grim "$file" && \
+  wl-copy < "$file" && \
+  notify-send "Screenshot" "Saved to $file"
+
