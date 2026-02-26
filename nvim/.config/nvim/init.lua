@@ -429,6 +429,83 @@ require("lazy").setup({
             -- stylua: ignore end
         end,
     },
+
+    {
+        "nvim-telescope/telescope.nvim",
+        branch = "0.1.x",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = function()
+            local actions = require("telescope.actions")
+
+            -- stylua: ignore start
+            local rg_globs = {
+                "--hidden",
+                "--glob", "!.git/*",
+                "--glob", "!**/.git/*",
+                "--glob", "!**/.cache/*",
+                "--glob", "!**/__pycache__/*",
+                "--glob", "!**/*.pyc",
+                "--glob", "!**/*_cache/*",
+                "--glob", "!**/node_modules/*",
+                "--glob", "!**/dist/*",
+                "--glob", "!**/build/*",
+            }
+            -- stylua: ignore end
+
+            return {
+                defaults = {
+                    border = true,
+                    borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                    mappings = {
+                        i = {
+                            ["<C-c>"] = actions.close,
+                            ["<C-j>"] = actions.move_selection_next,
+                            ["<C-k>"] = actions.move_selection_previous,
+                        },
+                        n = { ["q"] = actions.close },
+                    },
+                },
+                pickers = {
+                    -- stylua: ignore start
+                    find_files = {
+                        hidden = true,
+                        previewer = false,
+                        find_command = {
+                            "rg", "--files",
+                            "--hidden",
+                            "--glob", "!.git/*",
+                            "--glob", "!**/.git/*",
+                            "--glob", "!**/.cache/*",
+                            "--glob", "!**/*_cache/*",
+                            "--glob", "!**/__pycache__/*",
+                            "--glob", "!**/*_cache/*",
+                            "--glob", "!**/node_modules/*",
+                        },
+                    },
+                    -- stylua: ignore end
+                    live_grep = {
+                        additional_args = function()
+                            return rg_globs
+                        end,
+                    },
+                    grep_string = {
+                        additional_args = function()
+                            return rg_globs
+                        end,
+                    },
+                },
+            }
+        end,
+        config = function(_, opts)
+            require("telescope").setup(opts)
+
+            local builtin = require("telescope.builtin")
+            vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+            vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
+            vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
+            vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
+        end,
+    },
 })
 
 -- See `:help modeline`
