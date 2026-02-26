@@ -56,23 +56,72 @@ vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.opt.termguicolors = true
+vim.opt.whichwrap:append("<,>,h,l")
+vim.opt.virtualedit = "block"
+vim.opt.backspace = { "indent", "eol", "start" }
+vim.opt.completeopt = { "menuone", "noselect" }
 
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "[W]indow focus left" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "[W]indow focus down" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "[W]indow focus up" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "[W]indow focus right" })
 
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Terminal exit to normal mode" })
+vim.keymap.set("t", "<C-h>", [[<C-\><C-n><C-w>h]], { desc = "Terminal window left" })
+vim.keymap.set("t", "<C-j>", [[<C-\><C-n><C-w>j]], { desc = "Terminal window down" })
+vim.keymap.set("t", "<C-k>", [[<C-\><C-n><C-w>k]], { desc = "Terminal window up" })
+vim.keymap.set("t", "<C-l>", [[<C-\><C-n><C-w>l]], { desc = "Terminal window right" })
 
-vim.keymap.set("n", "[d", function()
-    vim.diagnostic.jump({ count = -1, float = true })
-end, { desc = "Go to previous [D]iagnostic message" })
-vim.keymap.set("n", "]d", function()
-    vim.diagnostic.jump({ count = 1, float = true })
-end, { desc = "Go to next [D]iagnostic message" })
+local term = { buf = nil, win = nil, job = nil }
 
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+local function open_term(cmd)
+    vim.cmd(cmd)
+    term.win = vim.api.nvim_get_current_win()
+
+    if term.buf and vim.api.nvim_buf_is_valid(term.buf) then
+        vim.api.nvim_win_set_buf(term.win, term.buf)
+    else
+        vim.cmd("terminal")
+        term.buf = vim.api.nvim_get_current_buf()
+        term.job = vim.b.terminal_job_id
+        vim.bo.buflisted = false
+    end
+
+    vim.cmd("startinsert")
+end
+
+local function toggle_term(cmd)
+    if term.win and vim.api.nvim_win_is_valid(term.win) then
+        vim.api.nvim_win_close(term.win, true)
+        term.win = nil
+    else
+        open_term(cmd)
+    end
+end
+
+vim.keymap.set("n", "<leader>tt", function()
+    toggle_term("botright 15split")
+end, { desc = "[T]erminal: [T]oggle (bottom split)" })
+vim.keymap.set("t", "<leader>tt", function()
+    toggle_term("botright 15split")
+end, { desc = "[T]erminal: [T]oggle (bottom split)" })
+
+vim.keymap.set("n", "<leader>tT", function()
+    toggle_term("vsplit")
+end, { desc = "[T]erminal: toggle (vsplit)" })
+vim.keymap.set("t", "<leader>tT", function()
+    vim.cmd("stopinsert")
+    toggle_term("vsplit")
+end, { desc = "[T]erminal: toggle (vsplit)" })
+
+-- stylua: ignore start
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Go to previous [D]iagnostic" })
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Go to next [D]iagnostic" })
+-- stylua: ignore end
+
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [e]rror messages" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [q]uickfix list" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function()
@@ -121,7 +170,7 @@ require("lazy").setup({
             },
         },
         keys = {
-            { "-", "<cmd>Oil<cr>" },
+            { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
         },
         config = function(_, opts)
             require("oil").setup(opts)
