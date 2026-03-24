@@ -16,8 +16,13 @@
   ],
 
   "clock": {
-    "format": "{:%H:%M %d/%m/%Y}",
-    "tooltip-format": "{:%Y-%m-%d %H:%M:%S}"
+    "format": "{:%H:%M:%S %d/%m/%Y}",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "right"
+    },
+    "interval": 5
   },
 
   "hyprland/workspaces": {
@@ -38,7 +43,7 @@
 
   "custom/network_speed": {
     "exec": "$HOME/.config/waybar/scripts/network_speed.sh",
-    "interval": 1,
+    "interval": 5,
     "tooltip": false
   },
 

@@ -1,4 +1,4 @@
-@define-color background rgba(29, 29, 41, 0.75);
+@define-color background rgba(20, 20, 30, 0.50);
 @define-color foreground #FFFFFF;
 
 * {
@@ -43,7 +43,7 @@ window#waybar > box {
 }
 
 #custom-network_speed {
-    font-size: 90%;
+
 }
 
 #custom-cpu_label,
