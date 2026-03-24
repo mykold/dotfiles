@@ -55,6 +55,7 @@ vim.o.inccommand = "split"
 vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
+vim.opt.cursorline = true
 vim.opt.termguicolors = true
 vim.opt.whichwrap:append("<,>,h,l")
 vim.opt.virtualedit = "block"
